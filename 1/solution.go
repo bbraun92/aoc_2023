@@ -113,20 +113,16 @@ func getWordFirstLast(line string) (int, int, string, string) {
 	for _, r := range words {
 		index := strings.Index(line, string(r))
 
-		if index > -1 {
-			if index < indexFirst {
-				indexFirst = index
-				wordFirst = wordToNum(string(r))
-			}
+		if index > -1 && index < indexFirst {
+			indexFirst = index
+			wordFirst = wordToNum(string(r))
 		}
 
 		index = strings.LastIndex(line, string(r))
 
-		if index > -1 {
-			if index > indexLast {
-				indexLast = index
-				wordLast = wordToNum(string(r))
-			}
+		if index > -1 && index > indexLast {
+			indexLast = index
+			wordLast = wordToNum(string(r))
 		}
 	}
 
