@@ -10,7 +10,27 @@ import (
 	"strings"
 )
 
-var words = [9]string{"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"}
+type WordToDigit struct {
+	word  string
+	digit string
+}
+
+type IndexDigitPair struct {
+	index int
+	digit string
+}
+
+var words = [9]WordToDigit{
+	{"one", "1"},
+	{"two", "2"},
+	{"three", "3"},
+	{"four", "4"},
+	{"five", "5"},
+	{"six", "6"},
+	{"seven", "7"},
+	{"eight", "8"},
+	{"nine", "9"},
+}
 
 const FILE_SRC = "input.txt"
 
@@ -38,10 +58,10 @@ func solve(goldStar bool) int {
 	for scanner.Scan() {
 		line := scanner.Text()
 
-		numIndexFirst, numIndexLast, numberFirst, numberLast := getFirstLast(line)
+		firstNum, lastNum := getFirstLast(line)
 
 		if !goldStar {
-			number, _ := strconv.Atoi(numberFirst + numberLast)
+			number, _ := strconv.Atoi(firstNum.digit + lastNum.digit)
 			sum += number
 			continue
 		}
@@ -51,14 +71,14 @@ func solve(goldStar bool) int {
 		first := ""
 		last := ""
 
-		if numIndexFirst < wordIndexFirst {
-			first = numberFirst
+		if firstNum.index < wordIndexFirst {
+			first = firstNum.digit
 		} else {
 			first = wordFirst
 		}
 
-		if numIndexLast > wordIndexLast {
-			last = numberLast
+		if lastNum.index > wordIndexLast {
+			last = lastNum.digit
 		} else {
 			last = wordLast
 		}
@@ -74,17 +94,15 @@ func solve(goldStar bool) int {
 	return sum
 }
 
-func getFirstLast(line string) (int, int, string, string) {
-	indexFirst := 0
-	indexLast := 0
-
-	first := ""
-	last := ""
+func getFirstLast(line string) (IndexDigitPair, IndexDigitPair) {
+	first := IndexDigitPair{0, ""}
+	last := IndexDigitPair{0, ""}
 
 	for i, r := range line {
-		if _, err := strconv.Atoi(string(r)); err == nil {
-			indexFirst = i
-			first = string(r)
+		character := string(r)
+
+		if _, err := strconv.Atoi(character); err == nil {
+			first = IndexDigitPair{i, character}
 			break
 		}
 	}
@@ -94,13 +112,12 @@ func getFirstLast(line string) (int, int, string, string) {
 		el := string(line[iReversed])
 
 		if _, err := strconv.Atoi(el); err == nil {
-			indexLast = iReversed
-			last = el
+			last = IndexDigitPair{iReversed, el}
 			break
 		}
 	}
 
-	return indexFirst, indexLast, first, last
+	return first, last
 }
 
 func getWordFirstLast(line string) (int, int, string, string) {
@@ -111,45 +128,20 @@ func getWordFirstLast(line string) (int, int, string, string) {
 	wordLast := ""
 
 	for _, r := range words {
-		index := strings.Index(line, string(r))
+		index := strings.Index(line, r.word)
 
 		if index > -1 && index < indexFirst {
 			indexFirst = index
-			wordFirst = wordToNum(string(r))
+			wordFirst = r.digit
 		}
 
-		index = strings.LastIndex(line, string(r))
+		index = strings.LastIndex(line, r.word)
 
 		if index > -1 && index > indexLast {
 			indexLast = index
-			wordLast = wordToNum(string(r))
+			wordLast = r.digit
 		}
 	}
 
 	return indexFirst, indexLast, wordFirst, wordLast
-}
-
-func wordToNum(word string) string {
-	switch word {
-	case "one":
-		return "1"
-	case "two":
-		return "2"
-	case "three":
-		return "3"
-	case "four":
-		return "4"
-	case "five":
-		return "5"
-	case "six":
-		return "6"
-	case "seven":
-		return "7"
-	case "eight":
-		return "8"
-	case "nine":
-		return "9"
-	default:
-		return "0"
-	}
 }
