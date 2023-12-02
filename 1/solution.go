@@ -96,10 +96,10 @@ func getNumberFirstLast(line string) (IndexDigitPair, IndexDigitPair) {
 
 	for i := range line {
 		iReversed := len(line) - 1 - i
-		el := string(line[iReversed])
+		character := string(line[iReversed])
 
-		if _, err := strconv.Atoi(el); err == nil {
-			last = IndexDigitPair{iReversed, el}
+		if _, err := strconv.Atoi(character); err == nil {
+			last = IndexDigitPair{iReversed, character}
 			break
 		}
 	}
