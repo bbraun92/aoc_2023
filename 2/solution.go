@@ -8,12 +8,7 @@ import (
 )
 
 const FILE_SRC = "input.txt"
-
 const PREFIX = "Game "
-
-const SUFFIX_RED = " red"
-const SUFFIX_GREEN = " green"
-const SUFFIX_BLUE = " blue"
 
 func main() {
 	fmt.Println("Solution to part one: ", partOne())
@@ -26,11 +21,9 @@ func partOne() int {
 	const MAX_BLUE = 14
 
 	lines := util.ReadFileLineByLine(FILE_SRC)
-
 	sumValid := 0
 
 	for _, line := range lines {
-
 		withoutPrefix, _ := strings.CutPrefix(line, PREFIX)
 		gameString, roundsString, _ := strings.Cut(withoutPrefix, ":")
 
@@ -41,27 +34,15 @@ func partOne() int {
 
 		for _, roundString := range rounds {
 			round := strings.Split(roundString, ",")
-			red, blue, green := 0, 0, 0
+			colorToCount := make(map[string]int)
 
 			for _, color := range round {
-
-				if strings.Contains(color, SUFFIX_RED) {
-					red = parseColor(color, SUFFIX_RED)
-					continue
-				}
-
-				if strings.Contains(color, SUFFIX_GREEN) {
-					green = parseColor(color, SUFFIX_GREEN)
-					continue
-				}
-
-				if strings.Contains(color, SUFFIX_BLUE) {
-					blue = parseColor(color, SUFFIX_BLUE)
-					continue
-				}
+				colorParts := strings.Split(color, " ")
+				count, _ := strconv.Atoi(colorParts[1])
+				colorToCount[colorParts[2]] = count
 			}
 
-			if red > MAX_RED || green > MAX_GREEN || blue > MAX_BLUE {
+			if colorToCount["red"] > MAX_RED || colorToCount["green"] > MAX_GREEN || colorToCount["blue"] > MAX_BLUE {
 				gameValid = false
 				break
 			}
@@ -77,51 +58,35 @@ func partOne() int {
 
 func partTwo() int {
 	lines := util.ReadFileLineByLine(FILE_SRC)
-
 	sum := 0
 
 	for _, line := range lines {
-
 		withoutPrefix, _ := strings.CutPrefix(line, PREFIX)
 		_, roundsString, _ := strings.Cut(withoutPrefix, ":")
 		rounds := strings.Split(roundsString, ";")
 
-		red, blue, green := 0, 0, 0
+		colorToCount := map[string]int{
+			"red":   0,
+			"green": 0,
+			"blue":  0,
+		}
 
 		for _, roundString := range rounds {
 			round := strings.Split(roundString, ",")
 
 			for _, color := range round {
+				colorParts := strings.Split(color, " ")
+				count, _ := strconv.Atoi(colorParts[1])
+				colorKey := colorParts[2]
 
-				if strings.Contains(color, SUFFIX_RED) {
-					currentRed := parseColor(color, SUFFIX_RED)
-					red = util.MaxInt(currentRed, red)
-					continue
-				}
-
-				if strings.Contains(color, SUFFIX_GREEN) {
-					currentGreen := parseColor(color, SUFFIX_GREEN)
-					green = util.MaxInt(currentGreen, green)
-					continue
-				}
-
-				if strings.Contains(color, SUFFIX_BLUE) {
-					currentBlue := parseColor(color, SUFFIX_BLUE)
-					blue = util.MaxInt(currentBlue, blue)
-					continue
+				if count > colorToCount[colorKey] {
+					colorToCount[colorKey] = count
 				}
 			}
 		}
 
-		sum += (red * blue * green)
+		sum += colorToCount["red"] * colorToCount["green"] * colorToCount["blue"]
 	}
 
 	return sum
-}
-
-func parseColor(text, suffix string) int {
-	trimmed, _ := strings.CutPrefix(text, " ")
-	trimmed, _ = strings.CutSuffix(trimmed, suffix)
-	color, _ := strconv.Atoi(trimmed)
-	return color
 }
