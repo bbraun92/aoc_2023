@@ -15,16 +15,16 @@ const SUFFIX_RED = " red"
 const SUFFIX_GREEN = " green"
 const SUFFIX_BLUE = " blue"
 
-const MAX_RED = 12
-const MAX_GREEN = 13
-const MAX_BLUE = 14
-
 func main() {
 	fmt.Println("Solution to part one: ", partOne())
 	fmt.Println("Solution to part two: ", partTwo())
 }
 
 func partOne() int {
+	const MAX_RED = 12
+	const MAX_GREEN = 13
+	const MAX_BLUE = 14
+
 	lines := util.ReadFileLineByLine(FILE_SRC)
 
 	sumValid := 0
@@ -95,31 +95,19 @@ func partTwo() int {
 
 				if strings.Contains(color, SUFFIX_RED) {
 					currentRed := parseColor(color, SUFFIX_RED)
-
-					if currentRed > red {
-						red = currentRed
-					}
-
+					red = util.MaxInt(currentRed, red)
 					continue
 				}
 
 				if strings.Contains(color, SUFFIX_GREEN) {
 					currentGreen := parseColor(color, SUFFIX_GREEN)
-
-					if currentGreen > green {
-						green = currentGreen
-					}
-
+					green = util.MaxInt(currentGreen, green)
 					continue
 				}
 
 				if strings.Contains(color, SUFFIX_BLUE) {
 					currentBlue := parseColor(color, SUFFIX_BLUE)
-
-					if currentBlue > blue {
-						blue = currentBlue
-					}
-
+					blue = util.MaxInt(currentBlue, blue)
 					continue
 				}
 			}
