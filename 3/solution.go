@@ -69,11 +69,10 @@ func solve() (int, int) {
 							addOrUpdateGearCandidate(gears, j, i, number)
 						}
 					}
+				}
 
-					if includeInSum {
-						sumParts += number
-						break
-					}
+				if includeInSum {
+					sumParts += number
 				}
 
 				start = -1
