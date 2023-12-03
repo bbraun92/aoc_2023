@@ -7,8 +7,6 @@ import (
 	"strconv"
 )
 
-var digits = []string{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}
-
 func main() {
 	silverStar, goldStar := solve()
 	fmt.Println("Solution to part 1: ", silverStar)
@@ -31,7 +29,7 @@ func solve() (int, int) {
 
 		for x, characterRune := range line {
 			character := string(characterRune)
-			isDigit := slices.Index(digits, character) > -1
+			isDigit := isDigit(character)
 
 			// Found start of number.
 			if start == -1 && isDigit {
@@ -94,9 +92,14 @@ func solve() (int, int) {
 	return sumParts, gearsSum
 }
 
+var digits = []string{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}
+
+func isDigit(character string) bool {
+	return slices.Index(digits, character) > -1
+}
+
 func isSymbol(character string) bool {
-	isDigit := slices.Index(digits, character) > -1
-	return character != "." && !isDigit
+	return character != "." && !isDigit(character)
 }
 
 func isGear(character string) bool {
