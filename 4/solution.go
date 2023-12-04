@@ -16,6 +16,7 @@ func main() {
 func solve() (int, int) {
 	lines := util.ReadFileLineByLine("input.txt")
 	points := 0
+	totalCards := 0
 	bonusCards := make([]int, len(lines))
 
 	for i := range bonusCards {
@@ -47,14 +48,9 @@ func solve() (int, int) {
 			bonusCards[j] += bonusCards[i]
 		}
 
+		totalCards += bonusCards[i]
 		points += val
 	}
 
-	cards := 0
-
-	for _, bonus := range bonusCards {
-		cards += bonus
-	}
-
-	return points, cards
+	return points, totalCards
 }
