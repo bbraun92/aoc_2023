@@ -19,11 +19,9 @@ func solve() (int, int) {
 	totalCards := 0
 	bonusCards := make([]int, len(lines))
 
-	for i := range bonusCards {
-		bonusCards[i] = 1
-	}
-
 	for i, line := range lines {
+		bonusCards[i] += 1
+
 		cards := strings.Split(line, ":")[1]
 		parts := strings.Split(cards, "|")
 
