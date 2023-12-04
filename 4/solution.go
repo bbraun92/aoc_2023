@@ -7,11 +7,6 @@ import (
 	"strings"
 )
 
-type Vector struct {
-	x int
-	y int
-}
-
 func main() {
 	silverStar, goldStar := solve()
 	fmt.Println("Solution to part 1: ", silverStar)
