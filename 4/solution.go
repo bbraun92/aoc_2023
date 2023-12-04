@@ -15,20 +15,19 @@ func main() {
 
 func solve() (int, int) {
 	lines := util.ReadFileLineByLine("input.txt")
-	points := 0
-	totalCards := 0
-	bonusCards := make([]int, len(lines))
+	cards := make([]int, len(lines))
+	totalPoints, totalCards := 0, 0
 
 	for i, line := range lines {
-		bonusCards[i] += 1
+		cards[i] += 1
 
-		cards := strings.Split(line, ":")[1]
-		parts := strings.Split(cards, "|")
+		game := strings.Split(line, ":")[1]
+		parts := strings.Split(game, "|")
 
 		winning := strings.Fields(parts[0])
 		scratched := strings.Fields(parts[1])
 
-		val := 0
+		points := 0
 		j := i
 
 		for _, number := range scratched {
@@ -36,19 +35,19 @@ func solve() (int, int) {
 				continue
 			}
 
-			if val == 0 {
-				val = 1
+			if points == 0 {
+				points = 1
 			} else {
-				val *= 2
+				points *= 2
 			}
 
 			j++
-			bonusCards[j] += bonusCards[i]
+			cards[j] += cards[i]
 		}
 
-		totalCards += bonusCards[i]
-		points += val
+		totalPoints += points
+		totalCards += cards[i]
 	}
 
-	return points, totalCards
+	return totalPoints, totalCards
 }
