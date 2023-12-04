@@ -20,6 +20,7 @@ func solve() (int, int) {
 
 	for i, line := range lines {
 		cards[i] += 1
+		totalCards += cards[i]
 
 		game := strings.Split(line, ":")[1]
 		parts := strings.Split(game, "|")
@@ -46,7 +47,6 @@ func solve() (int, int) {
 		}
 
 		totalPoints += points
-		totalCards += cards[i]
 	}
 
 	return totalPoints, totalCards
