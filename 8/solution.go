@@ -64,12 +64,11 @@ func partTwo() int {
 		}
 	}
 
-	searching := true
 	at := 0
 	steps := 0
 	found := make([]int, len(currents))
 
-	for searching {
+	for true {
 		steps++
 
 		for i, current := range currents {
@@ -99,7 +98,6 @@ func partTwo() int {
 		}
 
 		if allFound {
-			searching = false
 			break
 		}
 
